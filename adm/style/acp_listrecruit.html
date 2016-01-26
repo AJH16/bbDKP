@@ -1,0 +1,112 @@
+<!-- INCLUDE overall_header.html -->
+<a name="maincontent"></a>
+<h1>{L_ACP_LISTRECRUITS}</h1>
+<p>{L_ACP_LISTRECRUITS_EXPLAIN}</p>
+<style>
+    fieldset dt
+    {
+        width: 25%;
+    }
+
+    fieldset dd
+    {
+        margin-left: 25%;
+    }
+</style>
+<!-- IF .guild_row -->
+<form method="post" action="{U_RECRUITLIST}" id="listguild">
+    <fieldset style="background-color: #EEEEEE">
+        <dl>
+            <dt>
+                <label>{L_GUILD}:</label></dt>
+            </dt>
+            <dd>
+                <div style="display: table;">
+                    <div style="width:50%; float: left"><a href="{U_VIEW_GUILD}"><img style="width:80px; height:80px" src="{GUILD_EMBLEM}" alt="" /></a></div>
+                    <div style="width:50%; vertical-align: middle; display: table-cell;">
+                        <select name="guild_id" class="input" id="defaultguild" onchange="javascript:form.submit();" >
+                            <!-- BEGIN guild_row -->
+                            <option value="{guild_row.VALUE}"{guild_row.SELECTED}>{guild_row.OPTION}</option>
+                            <!-- END guild_row -->
+                        </select>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </fieldset>
+</form>
+
+<div id="advanced00">
+    <div class="permissions-category">
+        <ul>
+            <li class="permissions-preset-never activetab"><a href="{U_RECRUITLIST}" onclick=""><span class="tabbg"><span class="colour"></span>{L_ACP_LISTRECRUITS}</span></a></li>
+            <li class="permissions-preset-yes"><a href="{U_ADDRECRUIT}" onclick=""><span class="tabbg"><span class="colour"></span>{L_ACP_ADDRECRUITS}</span></a></li>
+        </ul>
+    </div>
+    <div class="permissions-panel" id="options001">
+        <span class="corners-top"><span></span></span>
+        <form method="post" action="{U_RECRUITLIST}" id="listrecruit">
+            <fieldset style="margin:10px;" class="tabulated">
+                <br />
+                <table width="100%" border="0" cellspacing="1" cellpadding="2">
+                    <thead>
+                    <tr>
+                        <th style="text-align: left; width:5%">{L_ID}</th>
+                        <th style="text-align: left; width:5%; white-space: nowrap">{L_ROLE}</th>
+                        <th colspan="2" style="text-align: left; width:5%; white-space: nowrap">{L_CLASS}</a></th>
+                        <th style="text-align: left; width:5%; white-space: nowrap">{L_POSITIONS}</th>
+                        <th style="text-align: left; width:5%; white-space: nowrap">{L_APPLICANTS}</th>
+                        <th style="text-align: left; width:60%; white-space: nowrap">{L_NOTE}</th>
+                        <!-- IF APPLY_INSTALLED == 1 -->
+                        <th style="text-align: middle; white-space: nowrap">{L_TEMPLATE}</th>
+                        <!-- ENDIF -->
+                        <th style="text-align: left; width:5%; white-space: nowrap">{L_STATUS}</th>
+                        <th style="text-align: center; width:5%;">{L_ACTION}</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th colspan=<!-- IF APPLY_INSTALLED == 1 -->"11"<!-- ELSE -->"10"<!-- ENDIF --> class="footer">{RECRUIT_FOOTCOUNT}</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <!-- BEGIN recruit_row -->
+                    <!-- IF recruit_row.S_ROW_COUNT is even -->
+                    <tr class="row1">
+                        <!-- ELSE -->
+                    <tr class="row2">
+                        <!-- ENDIF -->
+                        <td>{recruit_row.ID}</td>
+                        <td style="color: {recruit_row.ROLE_COLOR}"><strong>{recruit_row.ROLE_NAME}</strong></td>
+                        <td style="background-color: {recruit_row.COLOR_CODE}"><strong>{recruit_row.CLASS_NAME}</strong></td>
+                        <td><img style="vertical-align: middle;" src="{recruit_row.CLASS_IMAGE}" alt="{recruit_row.CLASS_NAME}" /></td>
+                        <td>{recruit_row.POSITIONS}</td>
+                        <td>{recruit_row.APPLICANTS}</td>
+                        <td style="text-align: left;">{recruit_row.NOTE}</td>
+                        <!-- IF APPLY_INSTALLED == 1 -->
+                            <td>{recruit_row.APPLYTEMPLATE_ID}</td>
+                        <!-- ENDIF -->
+                        <td>{recruit_row.STATUS}</td>
+                        <td style="text-align: center;"><a href="{recruit_row.U_VIEW_RECRUIT}">{ICON_EDIT}</a>
+                            <a href="{recruit_row.U_DELETE_RECRUIT}">{ICON_DELETE}</a>
+                        </td>
+                    </tr>
+                    <!-- END recruit_row -->
+                    </tbody>
+                </table>
+                <br />
+            </fieldset>
+        </form>
+        <span class="corners-bottom"><span></span></span>
+    </div>
+</div>
+
+<!-- ELSE -->
+<div class="errorbox">
+    <h3>{L_ERROR}</h3>
+    <p>{L_ERROR_NOGUILD}</p>
+</div>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

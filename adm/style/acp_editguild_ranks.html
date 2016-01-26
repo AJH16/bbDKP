@@ -1,0 +1,137 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_TITLE}&nbsp;{GUILD_NAME}</h1>
+<p>{L_EXPLAIN}</p>
+
+<div id="advanced00">
+    <div class="permissions-category">
+        <ul>
+            <li class="permissions-preset-yes"><a href="{U_EDIT_GUILD}" onclick=""><span class="tabbg"><span class="colour"></span>{L_EDIT_GUILD}</span></a></li>
+            <li class="permissions-preset-never activetab"><a href="{U_EDIT_GUILDRANKS}" onclick=""><span class="tabbg"><span class="colour"></span>{L_EDIT_RANKS}</span></a></li>
+        </ul>
+    </div>
+
+    <div class="permissions-panel" id="options001">
+        <span class="corners-top"><span></span></span>
+        <form method="post" action="{F_EDIT_GUILD}" id="editguild">
+            <div class="tablewrap">
+                <fieldset>
+                    <legend>{L_EDIT_RANKS}</legend>{L_ACP_ADDRANK_EXPLAIN}
+                    <div class="tablewrap">
+                        <table cellspacing="1" style="width:70%">
+
+                            <!-- IF ! S_GUILDLESS -->
+                            <thead>
+                            <tr class="row2">
+
+                                <th style="text-align: left">{L_RANKID}</th>
+                                <th style="text-align: left">{L_PLAYER_RANK}</th>
+                                <th style="text-align: center">{L_HIDE}</th>
+                                <th style="text-align: center">{L_LIST_PREFIX}</th>
+                                <th style="text-align: center">{L_LIST_SUFFIX}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <!-- ENDIF -->
+
+                            <tbody>
+                            <!-- BEGIN ranks_row -->
+                            <!-- IF ranks_row.S_ROW_COUNT is even -->
+                            <tr class="row1">
+                                <!-- ELSE -->
+                            <tr class="row2">
+                                <!-- ENDIF -->
+                                <td>{ranks_row.RANK_ID}</td>
+                                <!-- IF ranks_row.S_READONLY == 1 -->
+                                <td><input type="text" readonly="readonly" disabled="disabled" name="ranks[{ranks_row.RANK_ID}]" size="30" maxlength="50"
+                                           value="{ranks_row.RANK_NAME}" class="input" /></td>
+                                <td align="center"><input readonly="readonly" disabled="disabled" type="checkbox" name="hide[{ranks_row.RANK_ID}]"
+                                                          value="1" {ranks_row.HIDE_CHECKED} /></td>
+                                <td><input readonly="readonly" type="text" disabled="disabled" name="prefix[{ranks_row.RANK_ID}]"
+                                           size="25" maxlength="40" value="{ranks_row.RANK_PREFIX}" class="input" /></td>
+                                <td><input readonly="readonly" type="text" disabled="disabled" name="suffix[{ranks_row.RANK_ID}]"
+                                           size="25" maxlength="40" value="{ranks_row.RANK_SUFFIX}" class="input" /></td>
+                                <td style="text-align:center; white-space: nowrap;">
+                                </td>
+                                <!-- ELSE -->
+
+                                <td><input type="text" name="ranks[{ranks_row.RANK_ID}]" size="30" maxlength="50" value="{ranks_row.RANK_NAME}" class="input" /></td>
+                                <td align="center"><input type="checkbox" name="hide[{ranks_row.RANK_ID}]" value="1" {ranks_row.HIDE_CHECKED} /></td>
+                                <td><input type="text" name="prefix[{ranks_row.RANK_ID}]" size="25" maxlength="40" value="{ranks_row.RANK_PREFIX}" class="input" /></td>
+                                <td><input type="text" name="suffix[{ranks_row.RANK_ID}]" size="25" maxlength="40" value="{ranks_row.RANK_SUFFIX}" class="input" /></td>
+                                <!-- IF ! S_GUILDLESS -->
+                                <td style="text-align:center; width:5px; white-space: nowrap;"><a href="{ranks_row.U_DELETE_RANK}">{ICON_DELETE}</a></td>
+                                <!-- ENDIF -->
+
+                                <!-- ENDIF -->
+
+                            </tr>
+                            <!-- END ranks_row -->
+                            </tbody>
+                        </table>
+
+                        <!-- IF ! S_GUILDLESS -->
+                        <!-- IF .ranks_row -->
+                        <fieldset class="quick" style="float: {S_CONTENT_FLOW_END};">
+                            <input type="submit" name="updaterank" value="{L_EDIT_RANKS}" class="button1" />
+                        </fieldset>
+
+
+                        <!-- ENDIF -->
+                        <!-- ENDIF -->
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>{L_ADD_RANKS}</legend>
+                    <div class="tablewrap">
+                        <dl>
+                            <dt><label for="nrankid">{L_RANKID}:</label></dt>
+                            <dd>
+                                <input type="text" id="nrankid" name="nrankid" size="5" maxlength="2" value="" class="editfield" />
+
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><label for="nrankname">{L_PLAYER_RANK}:</label></dt>
+                            <dd>
+                                <input type="text" id="nrankname" name="nrankname" size="30" maxlength="50" value="" class="editfield" />
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><label for="nhide">{L_HIDE}:</label></dt>
+                            <dd>
+                                <input type="checkbox" id="nhide"  name="nhide" value="1" />
+
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><label for="nprefix">{L_LIST_PREFIX}:</label></dt>
+                            <dd>
+                                <input type="text" id="nprefix" name="nprefix" size="25" maxlength="40" value="" class="editfield" />
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt><label for="nsuffix">{L_LIST_SUFFIX}:</label></dt>
+                            <dd>
+                                <input type="text" id="nsuffix" name="nsuffix" size="25" maxlength="40" value="" class="editfield" />
+                            </dd>
+                        </dl>
+
+                        <fieldset class="quick" style="float: {S_CONTENT_FLOW_END}">
+                            {S_FORM_TOKEN}
+                            <input type="submit" name="addrank" value="{L_ADD_RANK}" class="button1"/>
+                        </fieldset>
+                    </div>
+                </fieldset>
+            </div>
+        </form>
+        <span class="corners-bottom"><span></span></span>
+    </div>
+</div>
+<!-- INCLUDE overall_footer.html -->

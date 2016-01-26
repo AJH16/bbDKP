@@ -1,17 +1,12 @@
-# ignore Mac invisibles
+/vendor/
 .DS_Store
-# ignore eclipse directories
+Thumbs.db
 .project
-.settings
-.cache
-docs/epgp.xlsx
-
-README.md
-
-.idea/.name
-
-.idea/.name
-
-.idea/bbDKP.iml
-
-*.iml
+com.zend.php.javabridge.core.prefs
+org.eclipse.php.core.projectOptions.prefs
+.dataModel
+.wsdlDataModelforum/cache/
+.idea
+composer.phar
+phpunit.xml.dist
+contrib

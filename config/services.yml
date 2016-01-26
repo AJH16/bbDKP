@@ -1,0 +1,43 @@
+# mapping of service "sajaki.bbguild.controller" to class sajaki\bbguild\controller\main
+services:
+    bbdkp.bbguild.controller:
+        class: bbdkp\bbguild\controller\main
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+    bbdkp.bbguild.portalcontroller:
+        class: bbdkp\bbguild\controller\main
+        arguments:
+            - '@config'
+            - '@config_text'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '%core.php_ext%'
+    bbdkp.bbguild.admin.controller:
+        class: bbdkp\bbguild\controller\admin_controller
+        arguments:
+            - '@cache'
+            - '@config'
+            - '@dbal.conn'
+            - '@pagination'
+            - '@controller.helper'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@ext.manager'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+    bbdkp.bbguild.listener:
+        class: bbdkp\bbguild\event\main_listener
+        arguments:
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '@config'
+        tags:
+            - { name: event.listener }

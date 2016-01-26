@@ -1,0 +1,390 @@
+<!-- INCLUDE ucp_header.html -->
+<script type="text/javascript">
+    // <![CDATA[
+    function check_form()
+    {
+        if (document.character_add.member_name.value.length < 2)
+        {
+            alert('{LA_MSG_NAME_EMPTY}');
+            return false;
+        }
+        return true;
+    }
+
+    //Wait for the page to load first
+    window.onload = function() {
+
+        //Get a reference to the link on the page
+        // with an id of "mylink"
+        var levelup = document.getElementById("levelup");
+        var leveldown = document.getElementById("leveldown");
+
+        levelup.onclick = function() {
+            var textBox = document.getElementById("member_level");
+            textBox.value++;
+            return false;}
+
+        leveldown.onclick = function() {
+            var textBox = document.getElementById("member_level");
+            textBox.value--;
+            return false;}
+    }
+
+
+
+    /*  make a XMLHTTP Request object */
+    function GetXmlHttpObject()
+    {
+        var myvar=false;
+
+        try
+        {
+            //  IE7+, Firefox, Chrome, Opera, Safari
+            myvar=new XMLHttpRequest();
+        }
+        catch(e)
+        {	// activex code for IE6, IE5
+            try
+            {
+                myvar= new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            catch(e)
+            {
+                try
+                {
+                    myvar = new ActiveXObject("Msxml2.XMLHTTP");
+                }
+                catch(e1)
+                {
+                    myvar=false;
+                }
+            }
+        }
+        return myvar;
+    }
+
+
+    /* ajax function to find rank */
+
+    var xmlhttp;
+    function GetGameRank(guildid)
+    {
+        xmlhttp = GetXmlHttpObject();
+        if (xmlhttp == null)
+        {
+            alert("{LA_ALERT_OLDBROWSER}");
+            return;
+        }
+        var strURL="{UA_FINDGAMERANK}?guild="+guildid;
+        xmlhttp.onreadystatechange=stateChanged;
+        xmlhttp.open("GET", strURL, true);
+        // send to server
+        xmlhttp.send(null);
+    }
+
+    /* ajax function to find class and race array based on game */
+
+    function GetClassRace(game_id)
+    {
+        xmlhttp = GetXmlHttpObject();
+        if (xmlhttp == null)
+        {
+            alert("{LA_ALERT_OLDBROWSER}");
+            return;
+        }
+        var strURL="{UA_FINDCLASSRACE}?game_id="+game_id;
+        xmlhttp.onreadystatechange=classracestateChanged;
+        xmlhttp.open("GET", strURL, true);
+        // send to server
+        xmlhttp.send(null);
+    }
+
+    /**
+     * called from GetRank when state changed
+     **/
+    function stateChanged()
+    {
+        if (xmlhttp.readyState==4) //request complete
+        {
+            if (xmlhttp.status == 200)
+            {
+                //remove select options
+                var rsel = document.getElementById('rankselect');
+                rsel.options.length = 0;
+                //receive xml
+                xmlDoc=xmlhttp.responseXML;
+                var game_id = '';
+                var root = xmlDoc.getElementsByTagName('ranklist')[0];
+                var ranks = root.getElementsByTagName("rank")
+                for (var i = 0; i < ranks.length; i++)
+                {
+                    var rank = ranks[i];
+                    var game_id = rank.getElementsByTagName("game_id")[0].firstChild.nodeValue;
+                    var game_name = rank.getElementsByTagName("game_name")[0].firstChild.nodeValue;
+                    var rankid = rank.getElementsByTagName("rank_id")[0].firstChild.nodeValue;
+                    var rankname = rank.getElementsByTagName("rank_name")[0].firstChild.nodeValue;
+                    // add the options
+                    rsel.options[i] = new Option(rankname,rankid, true, false);
+                }
+
+                document.getElementById('game_id').value = game_id;
+                document.getElementById('game_id_span').innerHTML = game_id;
+                document.getElementById('game_name').value = game_name;
+                GetClassRace(game_id);
+
+            }
+            else
+            {
+                alert("{LA_ALERT_AJAX}:\n" + xmlhttp.statusText);
+            }
+        }
+    }
+
+
+    /* called from GetClassRace when state changed */
+    function classracestateChanged()
+    {
+        if (xmlhttp.readyState==4) //request complete
+        {
+            if (xmlhttp.status == 200)
+            {
+                //receive xml
+                xmlDoc=xmlhttp.responseXML;
+                var racelist = xmlDoc.getElementsByTagName('racelist')[0];
+                var classlist = xmlDoc.getElementsByTagName("classlist")[0];
+
+                var species = racelist.getElementsByTagName("race");
+                var classes = classlist.getElementsByTagName("class");
+
+                //now modify html : first remove old select options
+                var rsel = document.getElementById('raceselect');
+                rsel.options.length = 0;
+
+
+                for (var i = 0; i < species.length; i++)
+                {
+                    var spec = species[i];
+                    var raceid = spec.getElementsByTagName("race_id")[0].firstChild.nodeValue;
+                    var racename = spec.getElementsByTagName("race_name")[0].firstChild.nodeValue;
+                    // add the options
+                    rsel.options[i] = new Option(racename,raceid, true, false);
+                }
+
+                var csel = document.getElementById('classselect');
+                csel.options.length = 0;
+
+
+                for (var j = 0; j < classes.length; j++)
+                {
+
+                    var cla = classes[j];
+                    var classid = cla.getElementsByTagName("class_id")[0].firstChild.nodeValue;
+                    var classname = cla.getElementsByTagName("class_name")[0].firstChild.nodeValue;
+                    // add the options
+                    csel.options[j] = new Option(classname,classid, true, false);
+                }
+            }
+            else
+            {
+                alert("{LA_ALERT_AJAX}:\n" + xmlhttp2.statusText);
+            }
+        }
+    }
+
+    // ]]>
+</script>
+<h2>{L_UCP_DKP_CHARACTER_ADD}</h2>
+<div class="panel">
+    <div class="inner"><span class="corners-top"><span></span></span>
+
+        <form method="post" action="{F_ADD_MEMBER}" name="character_add" onsubmit="return check_form(this)" >
+
+            <fieldset>
+
+                <!-- IF ERROR --><p class="error">{ERROR}</p>
+                <!-- ELSE -->
+
+                <!-- IF S_SHOW -->
+                <br />
+
+                <dl>
+                    <dt><label for="member_name">{L_NAME}:</label></dt>
+                    <dd><input type="text" name="member_name" id="member_name" size="18" maxlength="30" value="{MEMBER_NAME}" class="input" />
+                        <input type="text" name="member_title" id="member_title" size="23" maxlength="30" value="{MEMBER_TITLE}" class="input" /></dd>
+                </dl>
+
+                <dl>
+                    <dt>
+                        <label for="region_id">{L_REGION}:</label></dt>
+                    <dd>
+                        <select id="region_id" name="region_id" class="input">
+                            <!-- BEGIN region_row -->
+                            <option value="{region_row.VALUE}"{region_row.SELECTED}>{region_row.OPTION}</option>
+                            <!-- END region_row -->
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="realm">{L_REALM_NAME}:</label></dt>
+                    <dd><input type="text" id="realm" size="20" maxlength="30" name="realm" value="{REALM}" /></dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="member_guild_id">{L_GUILD}:</label></dt>
+                    <dd>
+                        <select name="member_guild_id" id="member_guild_id"  class="input" onchange="return GetGameRank(this.value)">
+                            <!-- BEGIN guild_row -->
+                            <option value="{guild_row.VALUE}"{guild_row.SELECTED}>{guild_row.OPTION}</option>
+                            <!-- END guild_row -->
+                        </select>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="member_rank_id">{L_MEMBER_RANK}:</label></dt>
+                    <dd>
+                        <select id="rankselect" name="member_rank_id" id="member_rank_id"  class="input">
+                            <!-- BEGIN rank_row -->
+                            <option value="{rank_row.VALUE}"{rank_row.SELECTED}>{rank_row.OPTION}</option>
+                            <!-- END rank_row -->
+                        </select>
+
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="game_id">{L_GAME}:</label></dt>
+
+                    <dd><input type="hidden" name="game_id" id="game_id"  value="{GAME_ID}"  />
+                        &nbsp; <span id="game_id_span">{GAME_ID}</span> &nbsp;
+                     <input readonly type="text" name="game_name" id="game_name" size="50" value="{GAME}" class="input" /></dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="member_level">{L_LEVEL}:</label></dt>
+                    <dd><input type="text" name="member_level" id="member_level" size="5" maxlength="3" value="{MEMBER_LEVEL}" class="input" />
+                        <a id="levelup"  href="{F_ADD_MEMBER}" target="_blank"><img src="./adm/images/icon_up.gif" /></a>
+                        <a id="leveldown" href="{F_ADD_MEMBER}" target="_blank"><img src="./adm/images/icon_down.gif" /></a>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="member_level">{L_ACHIEV}:</label></dt>
+                    <dd><input type="text" name="member_achiev" id="member_achiev" size="6" maxlength="6" value="{MEMBER_ACHIEV}" class="input" /></dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="raceselect">{L_RACE}:</label></dt>
+                    <dd><select id="raceselect" name="member_race_id" class="input">
+                        <!-- BEGIN race_row -->
+                        <option value="{race_row.VALUE}"{race_row.SELECTED}>{race_row.OPTION}</option>
+                        <!-- END race_row -->
+                    </select>
+
+                        <!-- IF S_RACE_IMAGE_EXISTS --> <br/><img src="{RACE_IMAGE}" alt="" />&nbsp;<!-- ELSE -->&nbsp;<!-- ENDIF -->
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="member_class_id">{L_CLASS}:</label></dt>
+                    <dd>
+                        <select id="classselect" id="member_class_id" name="member_class_id" class="input">
+                            <!-- BEGIN class_row -->
+                            <option value="{class_row.VALUE}"{class_row.SELECTED}>{class_row.OPTION}</option>
+                            <!-- END class_row -->
+                        </select>
+                        <!-- IF S_CLASS_IMAGE_EXISTS --><br/><img src="{CLASS_IMAGE}" alt="" /><!-- ELSE -->&nbsp;<!-- ENDIF -->
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="member_role">{L_ROLES}:</label></dt>
+                    <dd>
+                        <select name="member_role" id="member_role" class="input" >
+                            <!-- BEGIN role_row -->
+                            <option value="{role_row.VALUE}"{role_row.SELECTED}>{role_row.OPTION}</option>
+                            <!-- END role_row -->
+                        </select>
+                    </dd>
+                </dl>
+
+
+                <dl>
+                    <dt><label for="gender">{L_GENDER}:</label></dt>
+                    <dd>
+    <span id="gender"><input type="radio" name="gender" value="0"{MALE_CHECKED} /> {L_MALE}&nbsp;&nbsp;
+    <input type="radio" name="gender" value="1"{FEMALE_CHECKED} /> {L_FEMALE}
+     </span>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt><label for="activated">{L_ACTIVE}:</label></dt>
+                    <dd><input type="checkbox" class="radio" name="activated" id="activated" value="{MEMBER_ID}" <!-- IF STATUS_LOCK --> disabled="disabled" <!-- ENDIF --> {STATUS} />
+                    <!-- IF ! S_ADD -->
+                    <span style="color:red"> {DEACTIVATE_REASON}</span>
+                    <!-- ENDIF -->
+                    </dd>
+                </dl>
+
+
+                <dl>
+                    <dt><label>{L_JOINDATE} (YYYY-MM-DD):</label></dt>
+
+                    <dd>
+                        {L_DAY}: <select id="member_joindate_d" name="member_joindate_d">{S_JOINDATE_DAY_OPTIONS}</select>
+                        {L_MONTH}: <select name="member_joindate_mo">{S_JOINDATE_MONTH_OPTIONS}</select>
+                        {L_YEAR}: <select name="member_joindate_y">{S_JOINDATE_YEAR_OPTIONS}</select>
+                    </dd>
+                </dl>
+
+                <dl>
+                    <dt><label>{L_OUTDATE} (YYYY-MM-DD):</label></dt>
+
+                    <dd>
+                        {L_DAY}: <select id="member_outdate_d" name="member_outdate_d">{S_OUTDATE_DAY_OPTIONS}</select>
+                        {L_MONTH}: <select name="member_outdate_mo">{S_OUTDATE_MONTH_OPTIONS}</select>
+                        {L_YEAR}: <select name="member_outdate_y">{S_OUTDATE_YEAR_OPTIONS}</select>
+                    </dd>
+                </dl>
+
+
+                <dl>
+                    <dt><label for="member_comment">{L_COMMENT}:</label></dt>
+                    <dd><textarea name="member_comment" id="member_comment" type="text" rows="5" cols="10" style="width: 80%" class="input">{MEMBER_COMMENT}</textarea></dd>
+
+                </dl>
+                <input type="hidden" name="hidden_member_id" value="{MEMBER_ID}" />
+                {S_FORM_TOKEN}
+                <dl>
+                    <dt></dt>
+                    <dd>
+                        <!-- IF ! S_ADD -->
+                        <!-- IF S_CANUPDATE -->
+                        <input type="submit" name="update" value="{L_UPDATE_MEMBER}" class="button1" />
+                        <!-- ENDIF -->
+                        <!-- IF S_CANDELETE -->
+                        <input type="submit"  name="delete" value="{L_DELETE_MEMBER}" class="button1" />
+                        <!-- ENDIF -->
+                        <!-- ELSE -->
+                        <input type="submit" name="add" value="{L_ADD_MEMBER}" class="button2" />
+                        <input type="reset" name="reset" value="{L_RESET}" class="button1" />
+                        <!-- ENDIF -->
+                    </dd>
+                </dl>
+
+                <!-- ELSE -->
+
+                <p class="error">{MAX_CHARS_EXCEEDED} </p><p><br /><br /></p>
+                <!-- ENDIF -->
+
+                <!-- ENDIF -->
+
+            </fieldset>
+        </form>
+
+
+        <span class="corners-bottom"><span></span></span>
+    </div>
+</div>
+
+<!-- INCLUDE ucp_footer.html -->

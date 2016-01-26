@@ -1,0 +1,147 @@
+<!-- INCLUDE overall_header.html -->
+<a name="maincontent"></a>
+<h1>{L_TITLE}&nbsp;{GUILD_NAME}</h1>
+<p>{L_EXPLAIN}</p>
+<div id="advanced00">
+    <div class="permissions-category">
+        <ul>
+            <li class="permissions-preset-never activetab"><a href="{U_EDIT_GUILD}" onclick=""><span class="tabbg"><span class="colour"></span>{L_EDIT_GUILD}</span></a></li>
+            <li class="permissions-preset-yes"><a href="{U_EDIT_GUILDRANKS}" onclick=""><span class="tabbg"><span class="colour"></span>{L_EDIT_RANKS}</span></a></li>
+        </ul>
+    </div>
+
+    <div class="permissions-panel" id="options001">
+        <span class="corners-top"><span></span></span>
+
+        <form method="post" action="{U_EDIT_GUILD}" onsubmit="return check_form(this)" id="editguild">
+            <div class="tablewrap">
+                <fieldset>
+                    <legend>{L_EDIT_GUILD_TITLE}</legend>
+                    <div class="tablewrap">
+                        <dl>
+                            <dt><label for="guild_name">{L_GUILD_NAME}:</label></dt>
+                            <dd><input class="medium" type="text" id="guild_name" name="guild_name" value="{GUILD_NAME}" /></dd>
+                        </dl>
+                        <dl>
+                            <dt><label for="realm">{L_REALM_NAME}:</label></dt>
+                            <dd><input class="medium" type="text" id="realm" name="realm" value="{REALM}" /></dd>
+                        </dl>
+                        <dl>
+                            <dt>
+                                <label for="region_id">{L_REGION}:</label></dt>
+                            <dd>
+                                <select id="region_id" name="region_id" class="input">
+                                    <!-- BEGIN region_row -->
+                                    <option value="{region_row.VALUE}"{region_row.SELECTED}>{region_row.OPTION}</option>
+                                    <!-- END region_row -->
+                                </select>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><label for="guild_emblem">{L_GUILD_EMBLEM}:</label>{L_GUILD_EMBLEM_EXPLAIN}
+                            </dt>
+                            <dd>
+                                <img src="{EMBLEM}" alt="{L_GUILD_EMBLEM_NF}" /><br />
+                                <input type="text" size="40" id="guild_emblem" name="guild_emblem" value="{EMBLEMFILE}" />
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><label for="game_id">{L_GAME}:</label></dt>
+                            <dd>
+                                <select id="game_id" name="game_id" class="input" onchange="return GetClassRace(this.value)">
+                                    <!-- BEGIN game_row -->
+                                    <option value="{game_row.VALUE}"{game_row.SELECTED}>{game_row.OPTION}</option>
+                                    <!-- END game_row -->
+                                </select></dd>
+                        </dl>
+                        <dl>
+                            <dt><label>{L_PLAYERCOUNT}:</label></dt>
+                            <dd>{PLAYERCOUNT}</dd>
+                        </dl>
+
+                        <dl>
+                            <dt><label for="showroster">{L_SHOWONROSTER}:</label></dt>
+                            <dd style="text-align: left">
+                                <input type="checkbox" style="cursor: default"  id="showroster" name="showroster" value="1" {SHOW_ROSTER} /></dd>
+                        </dl>
+                        <dl>
+                            <dt style="width: 35%;"><label>{L_RECSTATUS}</label><br />{L_RECRUITMENT_BLOCK_EXPLAIN}
+                            </dt>
+                            <dd>
+                                <input type="radio" name="switchon_recruitment" value="1"<!-- IF RECSTATUS == 1 --> checked="checked"<!-- ENDIF --> /> {L_ON}&nbsp;&nbsp;
+                                <input type="radio" name="switchon_recruitment" value="0"<!-- IF RECSTATUS == 0 --> checked="checked"<!-- ENDIF --> /> {L_OFF}
+                            </dd>
+                        </dl>
+
+                        <dl>
+                            <dt>
+                                <label>{L_FORUM}:</label>
+                            </dt>
+                            <dd>
+                                <select name="recruitforum" id="recruitforum" class="input" >
+                                    {RECRUITFORUM_OPTIONS}
+                                </select>
+                            </dd>
+                        </dl>
+
+                        <hr/>
+                        <!-- IF S_WOW && F_ENABLGAMEEARMORY -->
+                        <dl>
+                            <dt><label>{L_ARMORY_ENABLED}:</label>{L_ARMORY_ENABLED_GUILD_EXPLAIN}</dt>
+                            <dd>
+                                <input type="radio" name="armory_enabled" value="1"<!-- IF F_ENABLEARMORY == 1 --> checked="checked"<!-- ENDIF -->/> {L_ON}&nbsp;&nbsp;
+                                <input type="radio" name="armory_enabled" value="0"<!-- IF F_ENABLEARMORY == 0 --> checked="checked"<!-- ENDIF -->/> {L_OFF}
+                            </dd>
+                        </dl>
+                        <!-- ENDIF -->
+                        <!-- IF F_ENABLEARMORY -->
+
+
+                        <dl>
+                            <dt><label>{L_ARMORYSTATUS}:</label></dt>
+                            <dd>{ARMORYSTATUS}</dd>
+                        </dl>
+                        <dl>
+                            <dt><label>{L_ARMORY_URL}:</label></dt>
+                            <dd><a href="{ARMORY_URL}">{ARMORY_URL}</a></dd>
+                        </dl>
+                        <dl>
+                            <dt><label for="min_armorylevel">{L_MIN_ARMORYLEVEL}</label></dt>
+                            <dd><input type="text" id="min_armorylevel" name="min_armorylevel" class="text" size="5" maxlength="3" value="{MIN_ARMORYLEVEL}" /></dd>
+                        </dl>
+                        <dl>
+                            <dt style="width: 35%;"><label>{L_ARMORY_GUILD}</label><br />
+                            </dt>
+                            <dd>
+                                <input type="submit" id="armory" name="armory" value="{L_ARMORY_GUILD}" class="button1" />
+                            </dd>
+                        </dl>
+                        <!-- ENDIF -->
+                    </div>
+                </fieldset>
+                <fieldset class="quick" style="float: {S_CONTENT_FLOW_END};">
+                    {S_FORM_TOKEN}
+                    <input type="hidden" name="guild_id" value="{GUILDID}" />
+                    <input type="submit" name="updateguild" value="{L_UPDATE_GUILD}" class="button1" />
+                    <input type="submit"  name="deleteguild" value="{L_DELETE_GUILD}" class="button2" />
+                </fieldset>
+            </div>
+        </form>
+
+        <span class="corners-bottom"><span></span></span>
+    </div>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    function check_form()
+    {
+        if (document.getElementById('guild_name').value.length < 2)
+        {
+            alert('{LA_FV_REQUIRED_NAME}');
+            return false;
+        }
+        return true;
+    }
+    //]]>
+</script>
+<!-- INCLUDE overall_footer.html -->

@@ -1,0 +1,20 @@
+{
+   "unstable":{
+      "3.1":{
+         "current":"2.0.0-dev",
+         "download":"https://github.com/bbDKP/bbDKP/archive/develop-2.0.zip",
+         "announcement":"",
+         "eol":null,
+         "security":false
+      }
+   },
+   "stable":{
+      "3.1":{
+         "current":"2.0.0-dev",
+         "download":"https://github.com/bbDKP/bbDKP/archive/develop-2.0.zip",
+         "announcement":"",
+         "eol":null,
+         "security":false
+      }
+   }
+}

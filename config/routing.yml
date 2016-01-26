@@ -1,0 +1,37 @@
+#bbguild 2.0 urls
+#
+#valid_views = array('news', 'roster',
+#
+# default route
+#guild/guild/1
+bbdkp_bbguild_00:
+    path: /guild
+    defaults: { _controller: bbdkp.bbguild.controller:handleGuild, guild_id: 1    }
+    requirements:
+     guild_id: \d*
+#dkp.php?page=news&guild_id=1
+#guild/news/guild/1
+bbdkp_bbguild_02:
+    path: /guild/news/guild/{guild_id}
+    defaults: { _controller: bbdkp.bbguild.controller:handleGuild, guild_id: 1    }
+    requirements:
+     guild_id: \d*
+#dkp.php?page=roster&guild_id=1&rosterlayout=0
+#guild/roster/guild/1
+#guild/roster/guild/1?rosterlayout=1
+bbdkp_bbguild_03:
+    path: /guild/roster/guild/{guild_id}
+    defaults: { _controller: bbdkp.bbguild.controller:handleGuild, guild_id: 1 }
+    requirements:
+     guild_id: \d*
+#dkp.php?page=player&player_id=2&dkpsys_id=3
+#guild/player/2?dkpsys_id=3
+bbdkp_bbguild_04:
+    path: /guild/player/{player_id}
+    defaults: { _controller: bbdkp.bbguild.controller:handlePlayer, player_id: 1 }
+    requirements:
+     player_id: \d*
+#portal.php/guild/1
+bbdkp_bbguild_43:
+    path: /guildportal/guild/{guild_id}
+    defaults: { _controller: bbdkp.bbguild.portalcontroller:handlePortal, guild_id: 1 }

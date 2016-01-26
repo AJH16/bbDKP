@@ -1,0 +1,210 @@
+<!-- INCLUDE overall_header.html -->
+<a name="maincontent"></a>
+<h1>{L_ACP_ADDRECRUITS}</h1>
+<p>{L_ACP_LISTRECRUITS_EXPLAIN}</p>
+<style>
+    fieldset dt
+    {
+        width: 25%;
+    }
+
+    fieldset dd
+    {
+        margin-left: 25%;
+    }
+</style>
+<form method="post" action="{U_RECRUITLIST}" id="listguild">
+
+    <fieldset style="background-color: #EEEEEE">
+        <dl>
+            <dt>
+                <label>{L_GUILD}:</label>
+            </dt>
+            <dd>
+                <div style="display: table;">
+                    <div style="width:50%; float: left"><a href="{U_VIEW_GUILD}"><img style="width:80px; height:80px" src="{GUILD_EMBLEM}" alt="" /></a></div>
+                    <div style="width:50%; vertical-align: middle; display: table-cell;">
+                        <select name="guild_id" class="input" id="defaultguild" onchange="javascript:form.submit();" >
+                            <!-- BEGIN guild_row -->
+                            <option value="{guild_row.VALUE}"{guild_row.SELECTED}>{guild_row.OPTION}</option>
+                            <!-- END guild_row -->
+                        </select>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </fieldset>
+</form>
+
+<div id="advanced00">
+    <div class="permissions-category">
+        <ul>
+            <li class="permissions-preset-yes"><a href="{U_RECRUITLIST}" onclick=""><span class="tabbg"><span class="colour"></span>{L_ACP_LISTRECRUITS}</span></a></li>
+            <li class="permissions-preset-yes never activetab "><a href="{U_ADDRECRUIT}" onclick=""><span class="tabbg"><span class="colour"></span>{L_ACP_ADDRECRUITS}</span></a></li>
+        </ul>
+    </div>
+
+    <div class="permissions-panel" id="options001">
+        <span class="corners-top"><span></span></span>
+        <form method="post" action="{U_ADDRECRUIT}" id="addrecruit">
+
+            <fieldset style="margin:10px; background-color: #EEEEEE">
+                <dl>
+                    <dt>
+                        <label>{L_ROLE}:</label>
+                    </dt>
+                    <dd>
+                        <select name="role" id="role" class="input" >
+                            <!-- BEGIN role_row -->
+                            <option value="{role_row.VALUE}"{role_row.SELECTED}>{role_row.OPTION}</option>
+                            <!-- END role_row -->
+                        </select>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <label>{L_CLASS}:</label>
+                    </dt>
+                    <dd>
+                        <select id="class_id" name="class_id" class="input">
+                            <!-- BEGIN class_row -->
+                            <option value="{class_row.VALUE}"{class_row.SELECTED}>{class_row.OPTION}</option>
+                            <!-- END class_row -->
+                        </select>
+                        <!-- IF S_CLASS_IMAGE_EXISTS --><br/><img src="{CLASS_IMAGE}" alt="" /><!-- ELSE -->&nbsp;<!-- ENDIF -->
+                    </dd>
+                </dl>
+                <dl>
+                    <dt>
+                        <label>{L_POSITIONS}:</label>
+                    </dt>
+                    <dd>
+                    <dd><input type="text" id="numpositions" name="numpositions" size="5" maxlength="2" value="{NUMPOSITIONS}" class="input" />
+                        <a id="numpositionsup"  href="{U_ADDRECRUIT}" target="_blank"><img src="./images/icon_up.gif" /></a>
+                        <a id="numpositionsdown" href="{U_ADDRECRUIT}" target="_blank"><img src="./images/icon_down.gif" /></a>
+
+                    </dd>
+                    </dd>
+                </dl>
+                <dl>
+                    <dt><label for="recruit_level">{L_LEVEL}:</label></dt>
+                    <dd><input type="text" name="recruit_level" id="recruit_level" size="5" maxlength="3" value="{RECRUIT_LEVEL}" class="input" />
+                        <a id="levelup"  href="{U_ADDRECRUIT}" target="_blank"><img src="./images/icon_up.gif" /></a>
+                        <a id="leveldown" href="{U_ADDRECRUIT}" target="_blank"><img src="./images/icon_down.gif" /></a>
+                    </dd>
+                </dl>
+
+                <!-- IF S_UPDATE -->
+                <dl>
+                    <dt>
+                        <label>{L_APPLICANTS}:</label>
+                    </dt>
+                    <dd>
+                    <dd><input type="text" name="applicants" id="applicants" size="5" maxlength="3" value="{APPLICANTS}" class="input" /></dd>
+                    </dd>
+                </dl>
+                <!-- ENDIF -->
+
+                <!-- IF APPLY_INSTALLED  == 1 -->
+                <dl>
+                    <dt>
+                        <label>{L_APPLY} {L_TEMPLATE}:</label>
+                    </dt>
+                    <dd>
+                    <dd>
+                        <select id="applytemplateid" name="applytemplateid" class="input">
+                            <!-- BEGIN applytemplates_row -->
+                            <option value="{applytemplates_row.VALUE}"{applytemplates_row.SELECTED}>{applytemplates_row.OPTION}</option>
+                            <!-- END applytemplates_row -->
+                        </select>
+                    </dd>
+                </dl>
+                <!-- ENDIF -->
+
+
+                <dl>
+                    <dt>
+                        <label>{L_STATUS}:</label>
+                    </dt>
+                    <dd><input type="checkbox" class="checkbox" name="recruitstatus" id="recruitstatus" {RECSTATUS}  /> {RECRUIT_STATUS}
+                    </dd>
+
+                </dl>
+                <dl>
+                    <dt>
+                        <label>{L_NOTE}:</label>
+                    </dt>
+                    <dd>
+                    <dd><textarea name="note" id="note" rows="5" cols="30" style="width: 100%" class="input">{NOTE}</textarea></dd>
+                    </dd>
+                </dl>
+
+
+
+                <p class="quick">
+                    {S_FORM_TOKEN}
+                    <input type="hidden" name="hidden_recruit_id" value="{RECRUIT_ID}" />
+                    <!-- IF S_ADD -->
+                    <input type="submit" name="add" value="{L_ADD}" class="button1" />
+                    <input type="reset" name="reset" value="{L_RESET}" class="button1" />
+                    <!-- ENDIF -->
+                    <!-- IF S_UPDATE -->
+                    <input type="submit" name="update" value="{L_UPDATE}" class="button1" />
+                    <input type="submit"  name="delete" value="{L_DELETE}" class="button1" />
+                    <!-- ENDIF -->
+                </p>
+
+
+            </fieldset>
+
+
+        </form>
+        <span class="corners-bottom"><span></span></span>
+    </div>
+</div>
+<script type="text/javascript">
+    // <![CDATA[
+
+    window.onload = function() {
+        //Get a reference to the link on the page
+        // with an id of "mylink"
+        var levelup = document.getElementById("levelup");
+        var leveldown = document.getElementById("leveldown");
+
+        // with an id of "mylink"
+        var numpositionsup = document.getElementById("numpositionsup");
+        var numpositionsdown = document.getElementById("numpositionsdown");
+
+        levelup.onclick = function() {
+            var textBox = document.getElementById("recruit_level");
+            textBox.value++;
+            return false;}
+
+        leveldown.onclick = function() {
+            var textBox = document.getElementById("recruit_level");
+            textBox.value--;
+            if (textBox.value < 1)
+            {
+                textBox.value = 1;
+            }
+            return false;}
+
+        numpositionsup.onclick = function() {
+            var textBox = document.getElementById("numpositions");
+            textBox.value++;
+            return false;}
+
+        numpositionsdown.onclick = function() {
+            var textBox = document.getElementById("numpositions");
+            textBox.value--;
+            if (textBox.value < 1)
+            {
+                textBox.value = 1;
+            }
+            return false;}
+    }
+
+</script>
+
+<!-- INCLUDE overall_footer.html -->
+

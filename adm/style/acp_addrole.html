@@ -1,0 +1,79 @@
+<!-- INCLUDE overall_header.html -->
+
+<script  type="text/javascript">
+    //<![CDATA[
+    function check_form()
+    {
+        if (document.getElementById('rolename').value.length < 2)
+        {
+            alert('{MSG_NAME_EMPTY}');
+            return false;
+        }
+        return true;
+    }
+    //]]>
+</script>
+
+<!-- IF ! IS_ADD -->
+<h1>{L_EDIT_ROLES}</h1>
+<!-- ELSE -->
+<h1>{L_ACP_ADDROLE}</h1>
+<!-- ENDIF -->
+<p>{L_ACP_ROLES_EXPLAIN}</p>
+
+<form id="acp_addrole" method="post" action="{U_ACTION}" onsubmit="return check_form(this)">
+    <div>
+
+        <fieldset>
+            <dl>
+                <dt><label>{L_GAME}:</label>{L_GAME_CLASSRACEUPDATE_EXPLAIN}</dt>
+                <dd><h4>{GAME_NAME}</h4>
+                </dd>
+            </dl>
+
+            <!-- IF ! IS_ADD -->
+            <dl>
+                <dt><label for="role_id">{L_ROLE_ID}:</label></dt>
+                <dd><label for="role_id"><strong>{ROLE_ID}</strong></label></dd>
+            </dl>
+            <!-- ENDIF -->
+
+            <dl>
+                <dt><label for="rolename">{L_ROLE_NAME}:</label></dt>
+                <dd><input type="text" id="rolename" name="rolename" value="{ROLE_NAME}" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="role_color">{L_ROLE_COLOR}:</label></dt>
+                <dd><input type="text" id="role_color" name="role_color" value="{ROLE_COLOR}" /></dd>
+            </dl>
+            <dl>
+                <dt><label for="role_icon">{L_ROLE_ICON}:</label></dt>
+                <dd><input type="text" id="role_icon" name="role_icon" value="{ROLE_ICON}" />
+                    <span><img src="{ROLE_ICON_IMG}" alt="image" /></span>
+                </dd>
+            </dl>
+            <dl>
+                <dt><label for="role_cat_icon">{L_ROLE_CAT_ICON}:</label></dt>
+                <dd><input type="text" id="role_cat_icon" name="role_cat_icon" value="{ROLE_CAT_ICON}" />
+                </dd>
+            </dl>
+        </fieldset>
+        <fieldset class="quick" style="float: {S_CONTENT_FLOW_END};">
+            {S_FORM_TOKEN}
+            <input type="hidden" name="hidden_game_id" value="{GAME_ID}" />
+            <input type="hidden" name="hidden_role_id" value="{ROLE_ID}" />
+
+            <!-- IF ! IS_ADD -->
+            <input type="submit" name="editrole" value="{L_EDIT_ROLE}" class="button1" />
+            <!-- ELSE -->
+            <input type="submit" name="addrole" value="{L_ADD_ROLES}" class="button1" />
+            <!-- ENDIF -->
+
+
+            <input type="reset" name="reset" value="{L_RESET}" class="button1" />
+        </fieldset>
+
+    </div>
+</form>
+
+<!-- INCLUDE overall_footer.html -->

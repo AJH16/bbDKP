@@ -1,0 +1,107 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+<h1>{L_BBGUILD_WELCOME}</h1>
+
+<!-- IF S_VERSIONCHECK_FAIL -->
+<div class="errorbox notice">
+    <p>{L_VERSIONCHECK_FAIL}</p>
+    <p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a> </p>
+</div>
+<!-- ELSEIF not S_VERSION_UP_TO_DATE -->
+<!-- IF S_PRERELEASE -->
+<div class="warningbox">
+    <p>{BBGUILD_NOT_UP_TO_DATE_TITLE} {L_BBGUILD_LATESTVERSION} {BBGUILD_LATESTVERSION}</p>
+    <p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a></p>
+</div>
+<!-- ELSE -->
+<div class="errorbox">
+    <p>{BBGUILD_NOT_UP_TO_DATE_TITLE} {L_BBGUILD_LATESTVERSION} {BBGUILD_LATESTVERSION}</p>
+    <p><a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a></p>
+</div>
+<!-- ENDIF -->
+<!-- ENDIF -->
+
+<table cellspacing="1">
+    <caption>{L_STATISTICS}</caption>
+    <col class="col1" /><col class="col2" /><col class="col1" /><col class="col2" />
+    <thead>
+    <tr>
+        <th>{L_STATISTIC}</th>
+        <th>{L_VALUE}</th>
+        <th>{L_STATISTIC}</th>
+        <th>{L_VALUE}</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+        <td class="row2" style="width:25%">{L_BBGUILD_VERSION}: </td>
+        <td class="row1" style="width:25%"><strong>
+            <a href="{U_VERSIONCHECK}" <!-- IF S_VERSION_UP_TO_DATE -->style="color: #228822;"<!-- ELSE -->style="color: #BC2A4D;"<!-- ENDIF --> title="{L_MORE_INFORMATION}">{BBGUILD_VERSION}</a>
+        </strong> [&nbsp;<a href="{U_VERSIONCHECK_FORCE}">{L_VERSIONCHECK_FORCE_UPDATE}</a>&nbsp;]
+        </td>
+        <td class="row2" style="width:25%">{L_PLUGINS_INSTALLED}:</td>
+        <td class="row1" style="width:25%">{PLUGINS_INSTALLED}</td>
+    </tr>
+    <tr>
+        <td class="row2" style="width:25%">{L_BBGUILD_STARTED}:</td>
+        <td class="row1" style="width:25%">{BBGUILD_STARTED}</td>
+        <td class="row2" style="width:25%">{L_GAMES_INST}:</td>
+        <td class="row1" style="width:25%">{GAMES_INSTALLED}</td>
+    </tr>
+    <tr>
+        <td class="row2" style="width:25%">{L_NUMBER_OF_GUILDS}:</td>
+        <td class="row1" style="width:25%">{NUMBER_OF_GUILDS}</td>
+        <td class="row2" style="width:25%">{L_NUMBER_OF_PLAYERS}:</td>
+        <td class="row1" style="width:25%">{NUMBER_OF_PLAYERS}</td>
+    </tr>
+
+    </tbody>
+</table>
+
+<!-- IF .plugin_row -->
+<table cellspacing="1">
+    <col class="col1" /><col class="col2" />
+    <thead>
+    <tr>
+        <th>{L_PLUGINS_INSTALLED}</th>
+        <th>{L_PLUGINS_STATUS}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- BEGIN plugin_row -->
+    <!-- IF plugin_row.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+        <!-- IF plugin_row.ISUPTODATE -->
+        <td class="row2" style="width:50%"><strong><span style="color: #228822;">{plugin_row.PLUGINNAME} {plugin_row.VERSION}</span></strong></td>
+        <td class="row1" style="width:50%"><span style="color: #228822;">{L_PLUGIN_UP_TO_DATE}</span></td>
+        <!-- ELSE -->
+        <td class="row2" style="width:50%"><strong><span style="color: #BC2A4D;">{plugin_row.PLUGINNAME} {plugin_row.VERSION}</span></strong></td>
+        <td class="row1" style="width:50%"><span style="color: #BC2A4D;">{plugin_row.UPDATEINSTR}</span></td>
+        <!-- ENDIF -->
+    </tr>
+    <!-- END plugin_row -->
+    </tbody>
+</table>
+<!-- ENDIF -->
+
+
+<!-- IF .actions_row -->
+
+<table cellspacing="1">
+    <caption>{L_NEW_ACTIONS}</caption>
+    <!-- BEGIN actions_row -->
+    <!-- IF actions_row.S_ROW_COUNT is even -->
+    <tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+    <td style="text-align: left; width:10%; white-space: nowrap">
+        <a href="{actions_row.U_VIEW_LOG}"><img src="{GLYPH}" width="16" height="16" alt="View" /></a>
+    </td>
+    <td style="text-align: left; width:20%; white-space: nowrap">  {actions_row.LOGDATE}</td>
+    <td style="text-align: left; width:70%; white-space: nowrap">{actions_row.ACTION}</td>
+</tr>
+    <!-- END actions_row -->
+</table>
+<!-- ENDIF -->
+
+<br />
+<!-- INCLUDE overall_footer.html -->
